@@ -7,7 +7,7 @@
 
 HELP(){ echo "khadas vims - fan control \
 USAGE
-    fan [0|1|2|3|max|min|mid|on|off] [--help]
+    fan [0|1|2|3|min|mid|max|on|off] [--help]
 ";}
 
 A=0x18
@@ -73,13 +73,13 @@ case $a in
     2|3)
     SET $a
     ;;
-    low)
+    lo*)
     SET 1
     ;;
-    mid)
+    mi*)
     SET 2
     ;;
-    max)
+    ma*)
     SET 3
     ;;
     of*|0|d*)
