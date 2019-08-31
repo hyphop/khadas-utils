@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 
 ## hyphop ##
 
@@ -15,11 +15,17 @@ C=0x88
 B=
 b=
 
+CMD(){
+    echo "[#] $@">&2
+    $@
+}
+
 which i2cget 1>/dev/null 2>/dev/null || {
     echo "[e] need install i2c-tools // apt-get install i2c-tools">&2
     exit 1
 }
 
+OK=
 # check i2c bus
 for B in /dev/i2c-?; do
     [ -c $B ] || {
@@ -27,10 +33,16 @@ for B in /dev/i2c-?; do
 	exit 1
     }
     b=${B#*-}
-    i2cget -y -f $b $A 1>/dev/null 2>/dev/null && break
+    i2cget -y -f $b $A 1>/dev/null && {
+	OK=1
+    	break
+    }
 done
 
-
+[ "$OK" ] || {
+    echo "[i] i2c device not found by $A $C">&2
+    exit 1
+}
 
 #echo "[i] b $B $b ">&2
 
@@ -38,13 +50,10 @@ GET(){
     echo $(i2cget -y $b $A $C b 2>/dev/null)
 }
 
-CMD(){
-    echo "[#] $@">&2
-    $@
-}
 
 SET(){
     CMD i2cset -y $b $A $C $1 b
+    echo "[i] set FUN SPEED: $1">&2
 }
 
 DEFAULT=1
