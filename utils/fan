@@ -1,0 +1,83 @@
+#!/bin/sh
+
+## hyphop ##
+
+#= khadas vims - fan control via user mode i2c
+#/
+
+HELP(){ echo "khadas vims - fan control \
+USAGE
+    fan [0|1|2|3|max|min|mid|on|off] [--help]
+";}
+
+A=0x18
+C=0x88
+B=
+b=
+
+which i2cget 1>/dev/null 2>/dev/null || {
+    echo "[e] need install i2c-tools // apt-get install i2c-tools">&2
+    exit 1
+}
+
+# check i2c bus
+for B in /dev/i2c-?; do
+    [ -c $B ] || {
+	echo "[e] i2c devs not found">&2
+	exit 1
+    }
+    b=${B#*-}
+    i2cget -y -f $b $A 1>/dev/null 2>/dev/null && break
+done
+
+
+
+#echo "[i] b $B $b ">&2
+
+GET(){
+    echo $(i2cget -y $b $A $C b 2>/dev/null)
+}
+
+CMD(){
+    echo "[#] $@">&2
+    $@
+}
+
+SET(){
+    CMD i2cset -y $b $A $C $1 b
+}
+
+DEFAULT=1
+
+#echo "[i] $(GET)">&2
+
+[ "$1" ] || {
+    HELP
+    exit 1
+}
+
+for a in $@; do
+case $a in
+    on|1|e*)
+    SET $DEFAULT
+    ;;
+    2|3)
+    SET $a
+    ;;
+    low)
+    SET 1
+    ;;
+    mid)
+    SET 2
+    ;;
+    max)
+    SET 3
+    ;;
+    of*|0|d*)
+    SET 0
+    ;;
+    *)
+    HELP
+esac
+done
+
