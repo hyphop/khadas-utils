@@ -5,9 +5,15 @@
 #= khadas vims - fan control via user mode i2c
 #/
 
+#s https://github.com/hyphop/khadas-utils
+#l https://github.com/hyphop/khadas-utils/blob/master/utils/fan
+#d https://raw.githubusercontent.com/hyphop/khadas-utils/master/utils/fan
+
 HELP(){ echo "khadas vims - fan control \
 USAGE
     fan [0|1|2|3|min|mid|max|on|off] [--help]
+
+
 ";}
 
 A=0x18
@@ -67,10 +73,10 @@ DEFAULT=1
 
 for a in $@; do
 case $a in
-    on|1|e*)
+    on|e*)
     SET $DEFAULT
     ;;
-    2|3)
+    1|2|3)
     SET $a
     ;;
     lo*)
