@@ -220,6 +220,13 @@ done
 
 }
 
+show_all(){
+    echo "
+    PORT_MODE: $(portmode_get)
+    BOOT_MODE: $(bootmode_get)
+"
+}
+
 ACTION=$0
 
 case $ACTION in
@@ -244,7 +251,11 @@ case $ACTION in
     sleep 1
     power_off_now
     ;;
+    all|show)
+    show_all
+    ;;
+
     *)
-    USAGE
+#    USAGE
     ;;
 esac
