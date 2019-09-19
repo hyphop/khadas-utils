@@ -2,7 +2,7 @@
 
 ## hyphop ##
 
-#= khadas vims - fan control via user mode i2c + temp monitor
+#= khadas vims - fan control via user mode i2c
 #/
 
 #s https://github.com/hyphop/khadas-utils

@@ -1,0 +1,25 @@
+#!/bin/sh
+
+## hyphop ##
+
+#= sensor test read
+
+SENSOR=/sys/class/thermal/thermal_zone0/temp
+
+DELAY=0.01
+
+while [ "1" ] ; do
+while read t ; do
+
+    [ $t -lt 0 ] && {
+	echo "[i] ERROR val $t">&2
+	exit 1
+    }
+
+    #echo $t
+
+done < $SENSOR
+
+sleep $DELAY
+
+done
