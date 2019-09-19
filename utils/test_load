@@ -1,0 +1,33 @@
+#!/bin/sh
+
+## hyphop ##
+
+#= cpu load test
+
+echo "[i] load test">&2
+
+HELP(){ echo "USAGE
+    $0 [start|stop|help]">&2
+}
+
+load(){
+for c in 1 2 3 4; do
+	md5sum < /dev/random &
+	echo "[i] start load $c - $!">&2
+done
+}
+
+case "$1" in
+    start)
+    load
+    ;;
+    stop)
+    echo "[i] stop load test">&2
+    pkill md5sum
+    ;;
+    *)
+    HELP
+    ;;
+esac
+
+

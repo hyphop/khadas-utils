@@ -8,18 +8,25 @@ SENSOR=/sys/class/thermal/thermal_zone0/temp
 
 DELAY=0.01
 
+echo "[i] start test sensor $SENSOR : $(cat $SENSOR)">&2
+echo "[i] goto loop !!! stop only if have errror value ">&2
+
+i=0
 while [ "1" ] ; do
+
 while read t ; do
 
     [ $t -lt 0 ] && {
-	echo "[i] ERROR val $t">&2
+	echo "[i] ERROR val $t - loop $i">&2
 	exit 1
     }
 
     #echo $t
 
+#   i=$((i+1))
+
 done < $SENSOR
 
-sleep $DELAY
+#sleep $DELAY
 
 done
