@@ -2,6 +2,8 @@
 
 ## hyphop ##
 
+#= add khadas fan daemon to autostart
+
 LOG="/tmp/autostart.log"
 
 echo "[i] started $(date)">> $LOG
