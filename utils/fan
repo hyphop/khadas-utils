@@ -69,22 +69,51 @@ CMD(){
     $@
 }
 
-which i2cget 1>/dev/null 2>/dev/null || {
-    echo "[e] need install i2c-tools // apt-get install i2c-tools">&2
+D="$(dirname $0)"
+
+i2cget=
+i2cset=
+
+i2cget=$(which i2cget 2>/dev/null)
+i2cset=$(which i2cset 2>/dev/null)
+
+[ "$i2cget" ] || {
+
+[ -f "$D/busybox" ] && {
+i2cget="$D/busybox i2cget"
+i2cset="$D/busybox i2cset"
+}
+
+}
+
+[ "$i2cget" ] || {
+    echo "[e] i2c tools not found">&2
     exit 1
 }
+
+#which $i2cget 1>/dev/null 2>/dev/null || {
+#    echo "[e] need install i2c-tools // apt-get install i2c-tools">&2
+#    exit 1
+#}
+
+#echo "[i] i2cget: $i2cget">&2
+#echo "[i] i2cset: $i2cset">&2
 
 OK=
 LOG=/var/log/fan.log
 
 # check i2c bus
 for B in /dev/i2c-?; do
+
+#    echo "[i] test $B bus">&2
+
     [ -c $B ] || {
 	echo "[e] i2c devs not found">&2
 	exit 1
     }
+
     b=${B#*-}
-    CMD i2cget -y -f $b $A 1>/dev/null 2>/dev/null && {
+    CMD $i2cget -y -f $b $A 1>/dev/null 2>/dev/null && {
 	OK=1
     	break
     }
@@ -98,7 +127,7 @@ done
 #echo "[i] b $B $b ">&2
 
 GET(){
-    echo $(i2cget -y $b $A $C b 2>/dev/null)
+    echo $($i2cget -y $b $A $C b 2>/dev/null)
 }
 
 
@@ -106,7 +135,7 @@ fan_state=
 
 SET(){
     fan_state=$1
-    $CMD i2cset -y $b $A $C $1 b
+    $CMD $i2cset -y $b $A $C $1 b
     echo "[i] set FUN SPEED: $1">&2
 }
 
