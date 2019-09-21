@@ -78,12 +78,17 @@ i2cget=$(which i2cget 2>/dev/null)
 i2cset=$(which i2cset 2>/dev/null)
 
 [ "$i2cget" ] || {
-
 [ -f "$D/busybox" ] && {
 i2cget="$D/busybox i2cget"
 i2cset="$D/busybox i2cset"
 }
+}
 
+[ "$i2cget" ] || {
+[ -f "/opt/busybox" ] && {
+i2cget="/opt/busybox i2cget"
+i2cset="/opt/busybox i2cset"
+}
 }
 
 [ "$i2cget" ] || {
