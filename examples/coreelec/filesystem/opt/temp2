@@ -6,17 +6,9 @@
 
 P=/sys/class/thermal/thermal_zone
 
-#master@peace:~$ grep "" /sys/class/thermal/thermal_zone?/type 
-#/sys/class/thermal/thermal_zone0/type:acpitz
-#/sys/class/thermal/thermal_zone1/type:acpitz
-#/sys/class/thermal/thermal_zone2/type:pch_skylake
-#/sys/class/thermal/thermal_zone3/type:x86_pkg_temp
-
 N=$1
 
 for t in $P?/temp; do
-
-#    p=${n%/*}
 
     n=${t#$P}
     n=${n%/*}

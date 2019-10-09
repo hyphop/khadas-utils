@@ -1,0 +1,9 @@
+[Unit]
+Description=Khadas-fan
+
+[Service]
+Type=simple
+ExecStart=/opt/fan monitor
+
+[Install]
+WantedBy=basic.target

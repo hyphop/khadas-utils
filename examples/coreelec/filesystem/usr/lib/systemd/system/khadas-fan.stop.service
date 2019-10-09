@@ -1,0 +1,12 @@
+[Unit]
+Description=Khadas-fan-stop
+Before=shutdown.target
+DefaultDependencies=no
+
+[Service]
+ExecStart=/opt/fan 0
+Type=oneshot
+RemainAfterExit=yes
+
+[Install]
+WantedBy=shutdown.target
